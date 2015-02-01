@@ -1,5 +1,3 @@
-package week2;
-
 import java.util.Arrays;
 import java.util.List;
 import java.nio.file.Files;
