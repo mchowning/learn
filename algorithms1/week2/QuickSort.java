@@ -41,23 +41,7 @@ public class QuickSort {
 //            swapElements(inputArray, min, max);
 
             // Use median of first, middle, last elements in sub-array
-            int midIndex = ((max - min) / 2) + min;
-            int lastIndex = max;
-
-            int pivotIndex;
-            int firstNum = inputArray[min];
-            int midNum = inputArray[midIndex];
-            int lastNum = inputArray[lastIndex];
-            
-            if ((midNum < firstNum && firstNum < lastNum) || (lastNum < firstNum && firstNum < midNum)) {
-                pivotIndex = min;
-            } else if ((firstNum < midNum && midNum < lastNum) || (lastNum < midNum && midNum < firstNum)) {
-                pivotIndex = midIndex;
-            } else {
-                pivotIndex = lastIndex;
-            }
-            System.out.println("index: " + pivotIndex + ", value: " + inputArray[pivotIndex]);
-            swapElements(inputArray, min, pivotIndex);
+            putFistMidLastMedianFirst(inputArray, min, max);
 
             
             int pivot = inputArray[min];
@@ -76,6 +60,29 @@ public class QuickSort {
             partitionArray(inputArray, min, partitionIndex-2);
             partitionArray(inputArray, partitionIndex, max);
         }
+    }
+
+    private static void putFistMidLastMedianFirst(int[] inputArray, int min, int max) {
+        int midIndex = ((max - min) / 2) + min;
+
+        int firstNum = inputArray[min];
+        int midNum = inputArray[midIndex];
+        int lastNum = inputArray[max];
+
+        int pivotIndex;
+        if (isMedian(firstNum, midNum, lastNum)) {
+            pivotIndex = min;
+        } else if (isMedian(midNum, firstNum, lastNum)) {
+            pivotIndex = midIndex;
+        } else {
+            pivotIndex = max;
+        }
+//            System.out.println("index: " + pivotIndex + ", value: " + inputArray[pivotIndex]);
+        swapElements(inputArray, min, pivotIndex);
+    }
+
+    private static boolean isMedian(int potentialMedian, int otherNum1, int otherNum2) {
+        return (otherNum1 < potentialMedian && potentialMedian < otherNum2) || (otherNum2 < potentialMedian && potentialMedian < otherNum1);
     }
 
     private static void swapElements(int[] array, int i1, int i2) {
