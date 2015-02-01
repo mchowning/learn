@@ -1,1 +1,5 @@
 *.swp
+
+# Remove all IntelliJ stuff
+*.iml
+.idea
