@@ -1,0 +1,64 @@
+i)
+Literal:
+There exists an x, y, and z such that x is not equal to y, x is not equal to z, y is not equal to z, and x, y, and z are all in the cabal
+Shortened:
+x, y, and z are all unique and in the cabal
+
+ii)
+It is not true that both Stav and David are in the cabal
+
+iii)
+if Martyna or Patrice are in the cabal
+then everyone is in the cabal
+
+iv)
+if Stav is in the cabal
+then David is in the cabal
+
+v)
+if Darren is in the cabal
+then Martyna is in the cabal
+
+vi)
+if Oscar or Nick are in the cabal
+then Tom is NOT in the cabal
+
+vii)
+if Oscar or David are in the cabal
+then Marten is NOT in the cabal
+
+Martyna     out
+Patrice     out
+
+Darren      out
+
+Stav        out
+
+David       in
+Oscar       in       
+Marten      
+Nick        in
+Tom
+
+ii(or vi or vii) + iii
+everyone is NOT in the cabal
+Martyna and Patrice are NOT in the cabal
+
+iii + v
+Darren is not in the cabal
+
+ii + iv
+FALSE - David and Stav are not in the cabal
+Stav is not in the cabal
+
+i
+There are at least 3 people in the cabal
+
+vi + vii
+if oscar
+then NOT Tom and NOT Marten
+likewise if not oscar
+then (Nick or David) and (Tom or Marten), which violates (i)
++i
+if oscar
+then David and Nick
