@@ -1,31 +1,30 @@
 package artificial_intelligence_planning.cannibal_missionary;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by matt on 2/13/15.
+ * Created by matt on 2/15/15.
  * Scenario is a river with 3 missionaries and 3 cannibals on the left with the goal being
  * to use a boat that only holds two people to get all 6 people across the river while
  * never allowing the cannibals to outnumber (and eat) the missionaries on any side.
  *
- * Uses breadth-first search.  Is identical to depth-first search version except that it uses
- * a queue instead of a stack.
+ * Uses depth-first search.  Is identical to breadth-first search version except that it uses
+ * a stack instead of a queue.
  */
-public class CannibalMissionaryBFS {
+public class CannibalMissionaryDFS {
 
     private static Set<State> inspectedStates;
-    private static Queue<List<State>> pathsToInspect;
+    private static Stack<List<State>> pathsToInspect;
 
     public static void main(String[] args) {
         inspectedStates = new HashSet<State>();
-        pathsToInspect = new ConcurrentLinkedQueue<List<State>>();
+        pathsToInspect = new Stack<List<State>>();
         List<State> startState = new ArrayList<State>() {{
             add(new State(3, 3, true, 0, 0));
         }};
-        pathsToInspect.add(startState);
+        pathsToInspect.push(startState);
         while (!pathsToInspect.isEmpty()) {
-            List<State> path = pathsToInspect.remove();
+            List<State> path = pathsToInspect.pop();
             if (isFinished(path)) {
                 printSolution(path);
                 return;
@@ -55,7 +54,7 @@ public class CannibalMissionaryBFS {
         List<State> newStates = possibleNextStates(lastState);
         for (State newState : newStates) {
             List<State> pathWithNewState = newPath(previousStateList, newState);
-            pathsToInspect.add(pathWithNewState);
+            pathsToInspect.push(pathWithNewState);
         }
     }
 
@@ -107,9 +106,9 @@ public class CannibalMissionaryBFS {
 
     private static boolean isValid(State state) {
         return state.leftCannibals >= 0 &&
-               state.rightCannibals >= 0 &&
-               (state.leftMissionaries == 0 || state.leftMissionaries >= state.leftCannibals) &&
-               (state.rightMissionaries == 0 || state.rightMissionaries >= state.rightCannibals);
+                state.rightCannibals >= 0 &&
+                (state.leftMissionaries == 0 || state.leftMissionaries >= state.leftCannibals) &&
+                (state.rightMissionaries == 0 || state.rightMissionaries >= state.rightCannibals);
     }
 
     private static class State {
