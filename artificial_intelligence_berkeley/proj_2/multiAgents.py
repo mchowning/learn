@@ -14,6 +14,7 @@
 
 from util import manhattanDistance
 from game import Directions
+from random import randint
 import random, util, math
 
 from game import Agent
@@ -280,8 +281,52 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
           All ghosts should be modeled as choosing uniformly at random from their
           legal moves.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        maxAction = None
+        maxValue = -99999999
+        for action in gameState.getLegalActions():
+            newGameState = gameState.generateSuccessor(0, action)
+            actionValue = self.expectValue(newGameState, 1, self.depth)
+            if actionValue > maxValue:
+                maxValue = actionValue
+                maxAction = action
+            # can never happen
+            # if maxValue > beta:
+            #     return maxValue
+
+        return maxAction
+
+    def maxValue(self, gameState, agent, depthLimit):
+        legalActions = gameState.getLegalActions(agent)
+        if depthLimit == 0 or gameState.isWin() or gameState.isLose() or legalActions is None:
+            return self.evaluationFunction(gameState)
+        else:
+            maxValue = -999999999
+            for successorAction in legalActions:
+                nextGameState = gameState.generateSuccessor(agent, successorAction)
+                nextAgent = agent + 1
+                thisValue = self.expectValue(nextGameState, nextAgent, depthLimit)
+                maxValue = max(maxValue, thisValue)
+            return maxValue
+
+
+    def expectValue(self, gameState, agent, depthLimit):
+        if gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState)
+        else :
+
+            legalActions = gameState.getLegalActions(agent)
+
+            totalValue = 0.0
+            for action in legalActions:
+                nextGameState = gameState.generateSuccessor(agent, action)
+                if agent + 1 == gameState.getNumAgents():
+                    totalValue += self.maxValue(nextGameState, 0, depthLimit - 1)
+                else:
+                    totalValue += self.expectValue(nextGameState, agent + 1, depthLimit)
+            averageValue = totalValue / len(legalActions)
+            return averageValue
+
 
 def betterEvaluationFunction(currentGameState):
     """
