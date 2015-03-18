@@ -334,9 +334,51 @@ def betterEvaluationFunction(currentGameState):
       evaluation function (question 5).
 
       DESCRIPTION: <write something here so we know what you did>
+
+      gameState.getLegalActions(agentIndex):
+      Returns a list of legal actions for an agent
+          agentIndex=0 means Pacman, ghosts are >= 1
+
+      gameState.generateSuccessor(agentIndex, action):
+      Returns the successor game state after an agent takes an action
+            gameState.getNumAgents():
+      Returns the total number of agents in the game
+
+      gameState.isWin():
+      Returns whether or not the game state is a winning state
+
+      gameState.isLose():
+      Returns whether or not the game state is a losing state
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    ghostStates = currentGameState.getGhostStates()
+    pacmanPosition = currentGameState.getPacmanPosition()
+    food = currentGameState.getFood()
+    foodList = currentGameState.getCapsules()
+    ghostStates = currentGameState.getGhostStates()
+    scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
+    gameScore = currentGameState.getScore()
+
+    totalGhostDistances = 0
+    for state in ghostStates:
+        ghostDistance = util.manhattanDistance(state.getPosition(), pacmanPosition)
+        # if ghostDistance < 5:
+        if ghostDistance < 10:
+            totalGhostDistances += ghostDistance
+
+    closestFoodDistance = 0
+    for foodPos in food.asList():
+        newFoodDistance = util.manhattanDistance(foodPos, pacmanPosition)
+        if closestFoodDistance == 0 or newFoodDistance < closestFoodDistance:
+            closestFoodDistance = newFoodDistance
+
+    if currentGameState.isWin():
+        return 999999999999
+    elif currentGameState.isLose():
+        return -999999999999
+    else:
+        return gameScore - (10 * len(food.asList())) - (2 * closestFoodDistance) - totalGhostDistances
+
 
 # Abbreviation
 better = betterEvaluationFunction
