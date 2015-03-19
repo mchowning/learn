@@ -75,33 +75,153 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
-        # TESTING
-        closestGhostValue = 999999
-        for ghostState in newGhostStates:
-            ghostDistance = util.manhattanDistance(ghostState.getPosition(), newPos)
-            if ghostDistance < closestGhostValue:
-                closestGhostValue = ghostDistance
 
-        # goAfterGhosts = False
-        # for scaredTimer in newScaredTimes:
-        #     if scaredTimer > 5:
-        #         goAfterGhosts = True
+        prevPacmanPosition = currentGameState.getPacmanPosition()
+        successorGhostStates = successorGameState.getGhostStates()
+        pacmanPosition = successorGameState.getPacmanPosition()
+        currentFood = currentGameState.getFood()
+        succFood = successorGameState.getFood()
+        capsuleList = successorGameState.getCapsules()
+        ghostStates = successorGameState.getGhostStates()
+        scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
 
-        closestGhostValue = min(closestGhostValue, 5)
-        closestGhostValue = math.pow(closestGhostValue, 5)
+        if successorGameState.isWin():
+            return 999999999999
+        if successorGameState.isLose():
+            return -999999999999
 
-        closestFood = 0
-        for foodPos in newFood.asList():
-            newFoodDistance = util.manhattanDistance(foodPos, newPos)
-            if closestFood == 0 or newFoodDistance < closestFood:
-                closestFood = newFoodDistance
-        closestFood = math.pow(closestFood, 2)
+        baseScore = 1000.0
+        eatsFoodPellet = len(successorGameState.getFood().asList()) < len(currentGameState.getFood().asList())
+        if eatsFoodPellet:
+            baseScore += 1000
+        else:
+            closestFoodDistance = 0
+            for foodPos in successorGameState.getFood().asList():
+                newFoodDistance = util.manhattanDistance(foodPos, pacmanPosition)
+                if closestFoodDistance == 0 or newFoodDistance < closestFoodDistance:
+                    closestFoodDistance = newFoodDistance
+            baseScore -= closestFoodDistance
 
-        scoreValue = (30 * successorGameState.getScore()) + closestGhostValue - closestFood
-        return scoreValue
-        # TESTING
+        ghostDistance = util.manhattanDistance(successorGameState.getGhostStates()[0].getPosition(), pacmanPosition)
+        if ghostDistance < 4:
+            ghostPenalty = 3000.0 / ghostDistance
+            baseScore -= ghostPenalty
 
-        # return successorGameState.getScore()
+
+        return baseScore
+
+        # # TESTING
+        # closestGhostValue = 999999
+        # for ghostState in newGhostStates:
+        #     ghostDistance = util.manhattanDistance(ghostState.getPosition(), newPos)
+        #     if ghostDistance < closestGhostValue:
+        #         closestGhostValue = ghostDistance
+        #
+        # closestGhostValue = min(closestGhostValue, 3)
+        # closestGhostValue = math.pow(closestGhostValue, 5)
+        # # print str(closestGhostValue)
+        #
+        # # goAfterGhosts = False
+        # # for scaredTimer in newScaredTimes:
+        # #     if scaredTimer > 5:
+        # #         goAfterGhosts = True
+        #
+        # # closestFood = 0
+        # # for foodPos in newFood.asList():
+        # #     newFoodDistance = util.manhattanDistance(foodPos, newPos)
+        # #     if closestFood == 0 or newFoodDistance < closestFood:
+        # #         closestFood = newFoodDistance
+        # # closestFood = math.pow(closestFood, 2)
+        #
+        # prevPacmanPosition = currentGameState.getPacmanPosition()
+        # ghostStates = successorGameState.getGhostStates()
+        # pacmanPosition = successorGameState.getPacmanPosition()
+        # food = successorGameState.getFood()
+        # capsuleList = successorGameState.getCapsules()
+        # ghostStates = successorGameState.getGhostStates()
+        # scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
+        #
+        # totalGhostDistances = 0
+        # for state in ghostStates:
+        #     ghostDistance = util.manhattanDistance(state.getPosition(), pacmanPosition)
+        #     # if ghostDistance < 5:
+        #     if ghostDistance < 10:
+        #         totalGhostDistances += ghostDistance
+        #
+        # closestFoodDistance = 0
+        # for foodPos in food.asList():
+        #     newFoodDistance = util.manhattanDistance(foodPos, pacmanPosition)
+        #     if closestFoodDistance == 0 or newFoodDistance < closestFoodDistance:
+        #         closestFoodDistance = newFoodDistance
+        #
+        # gameScore = successorGameState.getScore()
+        #
+        # if successorGameState.isLose():
+        #     return -999999999999999999
+        # if successorGameState.isWin():
+        #     return 999999999999999999
+        #
+        # currentCapsuleList = currentGameState.getCapsules()
+        # successorCapsuleList = successorGameState.getCapsules()
+        # if len(currentCapsuleList) > 0:
+        #
+        #     if len(currentCapsuleList) > len(successorCapsuleList):
+        #         return 1000
+        #
+        #     distanceToClosestCapsule = 99999
+        #     for i in range(len(currentCapsuleList)):
+        #         capsule = currentCapsuleList[i]
+        #         currentDistToCap = util.manhattanDistance(capsule, prevPacmanPosition)
+        #         if i == 0 or currentDistToCap < distanceToClosestCapsule:
+        #             distanceToClosestCapsule = currentDistToCap
+        #             successorDistToClosestCap = util.manhattanDistance(capsule, pacmanPosition)
+        #     if distanceToClosestCapsule > successorDistToClosestCap:
+        #         capsuleValue = 1000
+        #     else:
+        #         capsuleValue = -1000
+        #
+        #     return capsuleValue
+        #
+        #
+        # if scaredTimes[0] > 0:
+        #     currentGhostStates = currentGameState.getGhostStates()
+        #     successorGhostStates = successorGameState.getGhostStates()
+        #     distanceToClosestGhost = 999999
+        #     for i in range(len(currentGhostStates)):
+        #         currentGhostPos = currentGhostStates[i].getPosition()
+        #         successorGhostPos = successorGhostStates[i].getPosition()
+        #         distToCurrentGhost = util.manhattanDistance(currentGhostPos, prevPacmanPosition)
+        #         if distToCurrentGhost < distanceToClosestGhost:
+        #             distanceToClosestGhost = distToCurrentGhost
+        #             succDistanceToClosestGhost = util.manhattanDistance(successorGhostPos, pacmanPosition)
+        #     if distanceToClosestGhost > succDistanceToClosestGhost:
+        #         return 1000
+        #     else:
+        #         return -1000
+        #
+        #
+        #
+        # foodValue = 0
+        # if len(currentGameState.getFood().asList()) > len(successorGameState.getFood().asList()):
+        #     foodValue += 100
+        # return gameScore + foodValue + closestGhostValue
+        # # return gameScore - (10 * len(food.asList())) - (2 * closestFoodDistance) + (50 * totalGhostDistances)
+        # # return gameScore - (10 * len(food.asList())) - (2 * closestFoodDistance) - (50 * closestGhostValue)
+        #
+        # # scoreValue = (30 * successorGameState.getScore()) + closestGhostValue - closestFood
+        # # return scoreValue
+        # # TESTING
+        #
+        # # ghostStates = currentGameState.getGhostStates()
+        # # pacmanPosition = currentGameState.getPacmanPosition()
+        # # food = currentGameState.getFood()
+        # # foodList = currentGameState.getCapsules()
+        # # ghostStates = currentGameState.getGhostStates()
+        # # scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
+        # # gameScore = currentGameState.getScore()
+        #
+        # # return gameScore - (10 * len(food.asList())) - (2 * closestFoodDistance) - totalGhostDistances
+        # # return successorGameState.getScore()
 
 def scoreEvaluationFunction(currentGameState):
     """
