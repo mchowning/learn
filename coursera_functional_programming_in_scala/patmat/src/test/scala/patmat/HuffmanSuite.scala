@@ -51,4 +51,16 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  /*
+   * my tests
+   */
+
+  test("combining a list maintains properly ordered weights") {
+    new TestTrees {
+      val l = List(Leaf('a', 4), Leaf('b', 5), Leaf('c', 6))
+      val expected = List(Leaf('c',6), Fork(Leaf('a',4),Leaf('b',5),List('a', 'b'),9))
+      assert(combine(l) === expected)
+    }
+  }
+
 }
