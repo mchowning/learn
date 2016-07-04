@@ -1,0 +1,17 @@
+[0m[[0minfo[0m] [0mFast optimizing /Users/matt/dev/courses/coursera_functional_programming_design_in_scala/calculator/web-ui/target/scala-2.11/webui-fastopt.js[0m
+[0m[[0mdebug[0m] [0mLinker: Read info: 30672 us[0m
+[0m[[0mdebug[0m] [0mLinker: Compute reachability: 242159 us[0m
+[0m[[0mdebug[0m] [0mLinker: Assemble LinkedClasses: 337073 us[0m
+[0m[[0mdebug[0m] [0mLinker: cache stats: reused: 3461 -- invalidated: 15 -- trees read: 9[0m
+[0m[[0mdebug[0m] [0mLinker: 624937 us[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Batch mode: false[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Incremental part: 15274 us[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Optimizing 6 methods.[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Optimizer part: 4120 us[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: 34928 us[0m
+[0m[[0mdebug[0m] [0mRefiner: Compute reachability: 70857 us[0m
+[0m[[0mdebug[0m] [0mRefiner: Assemble LinkedClasses: 5252 us[0m
+[0m[[0mdebug[0m] [0mRefiner: 76321 us[0m
+[0m[[0mdebug[0m] [0mEmitter: Class tree cache stats: reused: 375 -- invalidated: 9[0m
+[0m[[0mdebug[0m] [0mEmitter: Method tree cache stats: resued: 2053 -- invalidated: 6[0m
+[0m[[0mdebug[0m] [0mEmitter (write output): 135629 us[0m
